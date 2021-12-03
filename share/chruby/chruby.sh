@@ -10,8 +10,8 @@ function chruby_reset()
 {
 	[[ -z "$RUBY_ROOT" ]] && return
 
-  local base_ruby_version="$($RUBY_ROOT/bin/ruby -e 'puts RbConfig::CONFIG["ruby_version"]')"
-	PATH=":$PATH:"; PATH="${PATH//$HOME\/.gem\/ruby\/$base_ruby_version\/bin:$RUBY_ROOT\/bin:/:}"
+  local user_dir="$($RUBY_ROOT/bin/ruby -e 'puts Gem.user_dir')"
+	PATH=":$PATH:"; PATH="${PATH//:$user_dir\/bin:$RUBY_ROOT\/bin:/:}"
 
 	PATH="${PATH#:}"; PATH="${PATH%:}"
 	unset RUBY_ROOT RUBY_ENGINE RUBY_VERSION RUBYOPT
@@ -29,8 +29,8 @@ function chruby_use()
 
 	export RUBY_ROOT="$1"
 	export RUBYOPT="$2"
-  local base_ruby_version="$($RUBY_ROOT/bin/ruby -e 'puts RbConfig::CONFIG["ruby_version"]')"
-  export PATH="$HOME/.gem/ruby/$base_ruby_version/bin:$RUBY_ROOT/bin:$PATH"
+  local user_dir="$($RUBY_ROOT/bin/ruby -e 'puts Gem.user_dir')"
+  export PATH="$user_dir/bin:$RUBY_ROOT/bin:$PATH"
 
   export RUBY_VERSION="$($RUBY_ROOT/bin/ruby -e 'puts RUBY_VERSION')"
 
